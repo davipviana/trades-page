@@ -5,7 +5,10 @@ class TradeController {
         this._inputDate = $('#date');
         this._inputAmount = $('#amount');
         this._inputValue = $('#value');
-        this._tradeList = new TradeList();
+        this._tradeList = new TradeList(model => 
+            this._tradeListView.update(model)
+        );
+
         this._tradeListView = new TradeListView($('#tradeListView'));
         this._messageView = new MessageView($('#messageView'));
         this._message = new Message();
@@ -19,14 +22,13 @@ class TradeController {
 
         this._tradeList.add(this._createNewTrade());
         this._message.text = "Trade created successfully";
-        this._tradeListView.update(this._tradeList);
+        
         this._messageView.update(this._message);
         this._clearForm();
     }
 
     clear() {
         this._tradeList.clear();
-        this._tradeListView.update(this._tradeList);
         
         this._message.text = "All trades removed successfully";
         this._messageView.update(this._message);
