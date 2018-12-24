@@ -1,14 +1,6 @@
-class TradeListView {
+class TradeListView extends View {
 
-    constructor(element) {
-        this._element = element;
-    }
-
-    update(tradeList) {
-        this._element.innerHTML = this._template(tradeList);
-    }
-
-    _template(tradeList) {
+    template(model) {
         return `
         <table class="table table-hover table-bordered">
             <thead>
@@ -22,7 +14,7 @@ class TradeListView {
             
             <tbody>
                 ${
-                    tradeList.trades.map(t => 
+                    model.trades.map(t => 
                         `
                             <tr>
                                 <td>${DateHelper.dateToText(t.date)}</td>
@@ -37,7 +29,7 @@ class TradeListView {
             
             <tfoot>
                 <td colspan="3"></td>
-                <td>${tradeList.trades.reduce((total, t) => total + t.volume, 0.0)}</td>
+                <td>${model.trades.reduce((total, t) => total + t.volume, 0.0)}</td>
             </tfoot>
         </table>
         `;
