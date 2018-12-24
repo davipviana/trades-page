@@ -1,8 +1,9 @@
 class Trade {
     constructor(date, amount, value) {
-        this._date = date;
+        this._date = new Date(date.getTime());
         this._amount = amount;
         this._value = value;
+        Object.freeze(this);
     }
 
     get volume() {
@@ -10,7 +11,7 @@ class Trade {
     }
 
     get date() {
-        return this._date;
+        return newDate(this._date.getTime());
     }
 
     get amount() {
