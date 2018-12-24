@@ -6,15 +6,17 @@ class TradeController {
         this._inputAmount = $('#amount');
         this._inputValue = $('#value');
         this._tradeList = new TradeList();
+        this._tradeListView = new TradeListView($('#tradeListView'));
+
+        this._tradeListView.update(this._tradeList);
     }
 
     add(event) {
         event.preventDefault();
 
         this._tradeList.add(this._createNewTrade());
+        this._tradeListView.update(this._tradeList);
         this._clearForm();
-
-        console.log(this._tradeList.trades);
     }
 
     _createNewTrade() {
