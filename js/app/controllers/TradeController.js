@@ -5,18 +5,31 @@ class TradeController {
         this._inputDate = $('#date');
         this._inputAmount = $('#amount');
         this._inputValue = $('#value');
+        this._tradeList = new TradeList();
     }
 
     add(event) {
         event.preventDefault();
 
-        let trade = new Trade(
+        this._tradeList.add(this._createNewTrade());
+        this._clearForm();
+
+        console.log(this._tradeList.trades);
+    }
+
+    _createNewTrade() {
+        return new Trade(
             DateHelper.textToDate(this._inputDate.value),
             this._inputAmount.value,
             this._inputValue.value
         )
+    }
 
-        console.log(trade);
-        console.log(DateHelper.dateToText(trade.date))
+    _clearForm() {
+        this._inputDate.value = '';
+        this._inputAmount.value = 1;
+        this._inputValue.value = 0;
+
+        this._inputDate.focus();
     }
 }
