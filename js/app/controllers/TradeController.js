@@ -10,16 +10,13 @@ class TradeController {
     add(event) {
         event.preventDefault();
 
-        let date = new Date(...
-            this._inputDate.value
-                .split('-')
-                .map((item, index) => item - index % 2)
-        )
-
         let trade = new Trade(
-            date,
+            DateHelper.textToDate(this._inputDate.value),
             this._inputAmount.value,
             this._inputValue.value
         )
+
+        console.log(trade);
+        console.log(DateHelper.dateToText(trade.date))
     }
 }

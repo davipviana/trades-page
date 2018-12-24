@@ -11,7 +11,7 @@ class Trade {
     }
 
     get date() {
-        return newDate(this._date.getTime());
+        return new Date(this._date.getTime());
     }
 
     get amount() {
