@@ -24,6 +24,14 @@ class TradeController {
         this._clearForm();
     }
 
+    clear() {
+        this._tradeList.clear();
+        this._tradeListView.update(this._tradeList);
+        
+        this._message.text = "All trades removed successfully";
+        this._messageView.update(this._message);
+    }
+
     _createNewTrade() {
         return new Trade(
             DateHelper.textToDate(this._inputDate.value),

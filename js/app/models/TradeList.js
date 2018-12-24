@@ -11,4 +11,8 @@ class TradeList {
     get trades() {
         return [].concat(this._trades);
     }
+
+    clear() {
+        this._trades = [];
+    }
 }
