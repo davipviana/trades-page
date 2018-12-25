@@ -5,9 +5,22 @@ class TradeController {
         this._inputDate = $('#date');
         this._inputAmount = $('#amount');
         this._inputValue = $('#value');
-        this._tradeList = new TradeList(model => 
-            this._tradeListView.update(model)
-        );
+        let self = this;
+        this._tradeList = new Proxy(new TradeList(), {
+
+            get(target, prop, receiver) {
+                if(['add', 'clear'].includes(prop) && typeof(target[prop]) == typeof(Function)) {
+
+                    return function() {
+                        Reflect.apply(target[prop], target, arguments);
+                        self._tradeListView.update(target);
+                    }
+
+                }
+                return Reflect.get(target, prop, receiver);
+            }
+
+        });
 
         this._tradeListView = new TradeListView($('#tradeListView'));
         this._messageView = new MessageView($('#messageView'));
