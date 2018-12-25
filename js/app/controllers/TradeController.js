@@ -28,23 +28,17 @@ class TradeController {
     }
 
     import() {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:3000/negociacoes/semana');
-        xhr.onreadystatechange = () => {
-            if(xhr.readyState == 4) {
-                if(xhr.status == 200) {
-                    JSON.parse(xhr.responseText)
-                        .map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor))
-                        .forEach(t => this._tradeList.add(t));
-
-                    this._message.text = "Trades imported successfully";
-                } else {
-                    console.log(`Error: ${xhr.responseText}`);
-                    this._message.text = "Could not get trades from server";
-                }
+        let service = new TradeService();
+        service.getWeekTrades((err, trades) => {
+            if(err) {
+                console.log(`Error: ${err}`);
+                this._message.text = "Could not get trades from server";
+                return;
             }
-        };
-        xhr.send();
+
+            trades.forEach(t => this._tradeList.add(t));
+            this._message.text = "Trades imported successfully";
+        });
     }
 
     clear() {
