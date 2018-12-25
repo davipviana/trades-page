@@ -6,18 +6,16 @@ class TradeController {
         this._inputAmount = $('#amount');
         this._inputValue = $('#value');
 
-        this._tradeListView = new TradeListView($('#tradeListView'));
         this._tradeList = new Bind(
             new TradeList(),
-            this._tradeListView,
-            ['add', 'clear']
+            new TradeListView($('#tradeListView')),
+            'add', 'clear'
         );
 
-        this._messageView = new MessageView($('#messageView'));
         this._message = new Bind(
             new Message(),
-            this._messageView,
-            ['text']
+            new MessageView($('#messageView')),
+            'text'
         );
     }
 
