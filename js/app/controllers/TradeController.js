@@ -39,6 +39,28 @@ class TradeController {
             trades.forEach(t => this._tradeList.add(t));
             this._message.text = "Trades imported successfully";
         });
+
+        service.getLastWeekTrades((err, trades) => {
+            if(err) {
+                console.log(`Error: ${err}`);
+                this._message.text = "Could not get trades from server";
+                return;
+            }
+
+            trades.forEach(t => this._tradeList.add(t));
+            this._message.text = "Trades imported successfully";
+        });
+
+        service.getTwoWeeksAgoTrades((err, trades) => {
+            if(err) {
+                console.log(`Error: ${err}`);
+                this._message.text = "Could not get trades from server";
+                return;
+            }
+
+            trades.forEach(t => this._tradeList.add(t));
+            this._message.text = "Trades imported successfully";
+        });
     }
 
     clear() {
