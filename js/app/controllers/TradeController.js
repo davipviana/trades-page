@@ -27,6 +27,26 @@ class TradeController {
         this._clearForm();
     }
 
+    import() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:3000/negociacoes/semana');
+        xhr.onreadystatechange = () => {
+            if(xhr.readyState == 4) {
+                if(xhr.status == 200) {
+                    JSON.parse(xhr.responseText)
+                        .map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor))
+                        .forEach(t => this._tradeList.add(t));
+
+                    this._message.text = "Trades imported successfully";
+                } else {
+                    console.log(`Error: ${xhr.responseText}`);
+                    this._message.text = "Could not get trades from server";
+                }
+            }
+        };
+        xhr.send();
+    }
+
     clear() {
         this._message.text = "All trades removed successfully";
         this._tradeList.clear();
