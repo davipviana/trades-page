@@ -1,63 +1,39 @@
 class TradeService {
+
+    constructor() {
+        this._httpService = new HttpService();
+    }
+
     getWeekTrades() {
-
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:3000/negociacoes/semana');
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState == 4) {
-                    if(xhr.status == 200) {
-                        resolve(
-                            JSON.parse(xhr.responseText)
-                                .map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor))
-                        );    
-                    } else {
-                        reject(xhr.responseText);
-                    }
-                }
-            };
-            xhr.send();
+            this._httpService
+                .get('http://localhost:3000/negociacoes/semana')
+                .then(trades => {
+                    resolve(trades.map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor)))
+                })
+                .catch(err => reject(err));
         });
-
     }
 
     getLastWeekTrades() {
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:3000/negociacoes/anterior');
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState == 4) {
-                    if(xhr.status == 200) {
-                        resolve(
-                            JSON.parse(xhr.responseText)
-                                .map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor))
-                        );    
-                    } else {
-                        reject(xhr.responseText);
-                    }
-                }
-            };
-            xhr.send();
+            this._httpService
+                .get('http://localhost:3000/negociacoes/anterior')
+                .then(trades => {
+                    resolve(trades.map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor)))
+                })
+                .catch(err => reject(err));
         });
     }
 
     getTwoWeeksAgoTrades() {
         return new Promise((resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', 'http://localhost:3000/negociacoes/retrasada');
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState == 4) {
-                    if(xhr.status == 200) {
-                        resolve(
-                            JSON.parse(xhr.responseText)
-                                .map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor))
-                        );    
-                    } else {
-                        reject(xhr.responseText);
-                    }
-                }
-            };
-            xhr.send();
+            this._httpService
+                .get('http://localhost:3000/negociacoes/retrasada')
+                .then(trades => {
+                    resolve(trades.map((obj) => new Trade(new Date(obj.data), obj.quantidade, obj.valor)))
+                })
+                .catch(err => reject(err));
         });
     }
 }
