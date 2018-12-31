@@ -15,4 +15,30 @@ class TradeDao {
             request.onerror = e => reject(e.target.error);
         });
     }
+
+    getAll() {
+        return new Promise((resolve, reject) => {
+            let cursor = this._connection
+                .transaction([this._store], 'readonly')
+                .objectStore(this._store)
+                .openCursor();
+
+            let trades = [];
+            cursor.onsuccess = e => {
+                let current = e.target.result;
+                if(current) {
+                    let trade = current.value;
+                    trades.push(new Trade(trade._date, trade._amount, trade._value));
+
+                    current.continue();
+                } else {
+                    resolve(trades);
+                }
+            }
+
+            cursor.onerror = e => {
+                reject(e.target.error);
+            }
+        });
+    }
 }

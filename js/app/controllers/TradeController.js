@@ -17,6 +17,12 @@ class TradeController {
             new MessageView($('#messageView')),
             'text'
         );
+
+        ConnectionFactory
+            .getConnection()
+            .then(conn => new TradeDao(conn))
+            .then(dao => dao.getAll())
+            .then(trades => trades.forEach(t => this._tradeList.add(t)));
     }
 
     add(event) {
