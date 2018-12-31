@@ -18,16 +18,16 @@ class TradeController {
             'text'
         );
 
+        this._tradeService = new TradeService();
+
         this._init();
     }
 
     _init() {
-        ConnectionFactory
-        .getConnection()
-        .then(conn => new TradeDao(conn))
-        .then(dao => dao.getAll())
-        .then(trades => trades.forEach(t => this._tradeList.add(t)))
-        .catch(() => this._message.text = "Could not get trades");
+        this._tradeService
+            .getAll()
+            .then(trades => trades.forEach(t => this._tradeList.add(t)))
+            .catch(() => this._message.text = "Could not get trades");
 
         setInterval(() => {
             this.import();
@@ -37,27 +37,22 @@ class TradeController {
     add(event) {
         event.preventDefault();
 
-        ConnectionFactory
-            .getConnection()
-            .then(conn => {
-                let newTrade = this._createNewTrade();
-                new TradeDao(conn)
-                    .add(newTrade)
-                    .then(() => {
-                        this._tradeList.add(newTrade);
-                        this._message.text = "Trade created successfully";
-                        this._clearForm();
-                    });
+        let newTrade = this._createNewTrade();
+        this._tradeService
+            .add(newTrade)
+            .then(message => {
+                this._tradeList.add(newTrade);
+                this._message.text = message;
+                this._clearForm();
             })
-            .catch(error => this._message.text = error);
+            .catch(err => this._message.text = err);
     }
 
     import() {
-        let service = new TradeService();
         Promise.all([
-            service.getWeekTrades(),
-            service.getLastWeekTrades(),
-            service.getTwoWeeksAgoTrades() 
+            this._tradeService.getWeekTrades(),
+            this._tradeService.getLastWeekTrades(),
+            this._tradeService.getTwoWeeksAgoTrades() 
         ])
         .then(trades =>
             trades
@@ -78,10 +73,8 @@ class TradeController {
     }
 
     clear() {
-        ConnectionFactory
-            .getConnection()
-            .then(conn => new TradeDao(conn))
-            .then(dao => dao.clear())
+        this._tradeService
+            .clear()
             .then(() => {
                 this._message.text = "All trades removed successfully";
                 this._tradeList.clear();
