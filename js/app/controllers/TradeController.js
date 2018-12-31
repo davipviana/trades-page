@@ -50,9 +50,16 @@ class TradeController {
             service.getWeekTrades(),
             service.getLastWeekTrades(),
             service.getTwoWeeksAgoTrades() 
-        ]).then(trades => {
+        ])
+        .then(trades =>
             trades
                 .reduce((resultArray, array) => resultArray.concat(array), [])
+                .filter(t =>
+                !this._tradeList.trades.some(t2 =>
+                    JSON.stringify(t) == JSON.stringify(t2)))
+        )
+        .then(trades => {
+            trades
                 .forEach(t => this._tradeList.add(t));
             this._message.text = "Trades imported successfully";
         })
