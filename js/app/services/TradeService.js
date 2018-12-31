@@ -65,4 +65,23 @@ class TradeService {
             .then(conn => new TradeDao(conn))
             .then(dao => dao.clear())
     }
+
+    import(currentTradeList) {
+        return Promise.all([
+            this.getWeekTrades(),
+            this.getLastWeekTrades(),
+            this.getTwoWeeksAgoTrades() 
+        ])
+        .then(trades =>
+            trades
+                .reduce((resultArray, array) => resultArray.concat(array), [])
+                .filter(t =>
+                !currentTradeList.some(t2 =>
+                    JSON.stringify(t) == JSON.stringify(t2)))
+        )
+        .catch(err => {
+            console.log(`Error: ${err}`);
+            throw new Error('Could not get trades from server');
+        });
+    }
 }

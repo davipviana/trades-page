@@ -49,27 +49,13 @@ class TradeController {
     }
 
     import() {
-        Promise.all([
-            this._tradeService.getWeekTrades(),
-            this._tradeService.getLastWeekTrades(),
-            this._tradeService.getTwoWeeksAgoTrades() 
-        ])
-        .then(trades =>
-            trades
-                .reduce((resultArray, array) => resultArray.concat(array), [])
-                .filter(t =>
-                !this._tradeList.trades.some(t2 =>
-                    JSON.stringify(t) == JSON.stringify(t2)))
-        )
-        .then(trades => {
-            trades
-                .forEach(t => this._tradeList.add(t));
-            this._message.text = "Trades imported successfully";
-        })
-        .catch(err => {
-            console.log(`Error: ${err}`);
-            this._message.text = "Could not get trades from server";
-        });
+        this._tradeService
+            .import(this._tradeList.trades)
+            .then(trades => {
+                trades.forEach(t => this._tradeList.add(t));
+                this._message.text = "Trades imported successfully";
+            })
+            .catch(err => this._message.text = "Could not get trades from server");
     }
 
     clear() {
