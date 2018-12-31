@@ -18,12 +18,20 @@ class TradeController {
             'text'
         );
 
+        this._init();
+    }
+
+    _init() {
         ConnectionFactory
-            .getConnection()
-            .then(conn => new TradeDao(conn))
-            .then(dao => dao.getAll())
-            .then(trades => trades.forEach(t => this._tradeList.add(t)))
-            .catch(() => this._message.text = "Could not get trades");
+        .getConnection()
+        .then(conn => new TradeDao(conn))
+        .then(dao => dao.getAll())
+        .then(trades => trades.forEach(t => this._tradeList.add(t)))
+        .catch(() => this._message.text = "Could not get trades");
+
+        setInterval(() => {
+            this.import();
+        }, 5000);
     }
 
     add(event) {
