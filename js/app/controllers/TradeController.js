@@ -22,9 +22,19 @@ class TradeController {
     add(event) {
         event.preventDefault();
 
-        this._tradeList.add(this._createNewTrade());
-        this._message.text = "Trade created successfully";
-        this._clearForm();
+        ConnectionFactory
+            .getConnection()
+            .then(conn => {
+                let newTrade = this._createNewTrade();
+                new TradeDao(conn)
+                    .add(newTrade)
+                    .then(() => {
+                        this._tradeList.add(newTrade);
+                        this._message.text = "Trade created successfully";
+                        this._clearForm();
+                    });
+            })
+            .catch(error => this._message.text = error);
     }
 
     import() {
