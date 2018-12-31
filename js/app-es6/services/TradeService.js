@@ -1,4 +1,9 @@
-class TradeService {
+import {HttpService} from './HttpService';
+import {ConnectionFactory} from './ConnectionFactory';
+import {TradeDao} from '../dao/TradeDao';
+import {Trade} from '../models/Trade';
+
+export class TradeService {
 
     constructor() {
         this._httpService = new HttpService();

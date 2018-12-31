@@ -1,4 +1,6 @@
-class TradeListView extends View {
+import {View} from './View';
+
+export class TradeListView extends View {
 
     template(model) {
         return `

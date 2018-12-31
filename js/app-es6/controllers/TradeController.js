@@ -1,3 +1,12 @@
+import {TradeList} from '../models/TradeList';
+import {Message} from '../models/Message';
+import {TradeListView} from '../views/TradeListView';
+import {MessageView} from '../views/MessageView';
+import {TradeService} from '../services/TradeService';
+import {DateHelper} from '../helpers/DateHelper';
+import {Bind} from '../helpers/Bind';
+import {Trade} from '../models/Trade';
+
 class TradeController {
 
     constructor() {

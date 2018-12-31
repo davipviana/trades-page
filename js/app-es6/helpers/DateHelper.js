@@ -1,4 +1,4 @@
-class DateHelper {
+export class DateHelper {
 
     constructor() {
         throw new Error('DateHelper can not be instantiated');
