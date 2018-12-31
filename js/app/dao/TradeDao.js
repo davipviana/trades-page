@@ -1,56 +1,77 @@
-class TradeDao {
-    constructor(connection) {
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TradeDao = function () {
+    function TradeDao(connection) {
+        _classCallCheck(this, TradeDao);
+
         this._connection = connection;
         this._store = 'trades';
     }
 
-    add(trade) {
-        return new Promise((resolve, reject) => {
-            let request = this._connection
-                .transaction([this._store], 'readwrite')
-                .objectStore(this._store)
-                .add(trade);
+    _createClass(TradeDao, [{
+        key: 'add',
+        value: function add(trade) {
+            var _this = this;
 
-            request.onsuccess = e => resolve();
-            request.onerror = e => reject(e.target.error);
-        });
-    }
+            return new Promise(function (resolve, reject) {
+                var request = _this._connection.transaction([_this._store], 'readwrite').objectStore(_this._store).add(trade);
 
-    getAll() {
-        return new Promise((resolve, reject) => {
-            let cursor = this._connection
-                .transaction([this._store], 'readonly')
-                .objectStore(this._store)
-                .openCursor();
+                request.onsuccess = function (e) {
+                    return resolve();
+                };
+                request.onerror = function (e) {
+                    return reject(e.target.error);
+                };
+            });
+        }
+    }, {
+        key: 'getAll',
+        value: function getAll() {
+            var _this2 = this;
 
-            let trades = [];
-            cursor.onsuccess = e => {
-                let current = e.target.result;
-                if(current) {
-                    let trade = current.value;
-                    trades.push(new Trade(trade._date, trade._amount, trade._value));
+            return new Promise(function (resolve, reject) {
+                var cursor = _this2._connection.transaction([_this2._store], 'readonly').objectStore(_this2._store).openCursor();
 
-                    current.continue();
-                } else {
-                    resolve(trades);
-                }
-            }
+                var trades = [];
+                cursor.onsuccess = function (e) {
+                    var current = e.target.result;
+                    if (current) {
+                        var trade = current.value;
+                        trades.push(new Trade(trade._date, trade._amount, trade._value));
 
-            cursor.onerror = e => {
-                reject(e.target.error);
-            }
-        });
-    }
+                        current.continue();
+                    } else {
+                        resolve(trades);
+                    }
+                };
 
-    clear() {
-        return new Promise((resolve, reject) => {
-            let request = this._connection
-                .transaction([this._store], 'readwrite')
-                .objectStore(this._store)
-                .clear();
+                cursor.onerror = function (e) {
+                    reject(e.target.error);
+                };
+            });
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            var _this3 = this;
 
-            request.onsuccess = e => resolve();
-            request.onerror = e => reject(e);
-        });
-    }
-}
+            return new Promise(function (resolve, reject) {
+                var request = _this3._connection.transaction([_this3._store], 'readwrite').objectStore(_this3._store).clear();
+
+                request.onsuccess = function (e) {
+                    return resolve();
+                };
+                request.onerror = function (e) {
+                    return reject(e);
+                };
+            });
+        }
+    }]);
+
+    return TradeDao;
+}();
+//# sourceMappingURL=TradeDao.js.map
