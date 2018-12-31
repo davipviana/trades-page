@@ -63,8 +63,8 @@ class TradeController {
     _createNewTrade() {
         return new Trade(
             DateHelper.textToDate(this._inputDate.value),
-            this._inputAmount.value,
-            this._inputValue.value
+            parseInt(this._inputAmount.value),
+            parseFloat(this._inputValue.value)
         )
     }
 
