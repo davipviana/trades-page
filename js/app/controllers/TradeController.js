@@ -22,7 +22,8 @@ class TradeController {
             .getConnection()
             .then(conn => new TradeDao(conn))
             .then(dao => dao.getAll())
-            .then(trades => trades.forEach(t => this._tradeList.add(t)));
+            .then(trades => trades.forEach(t => this._tradeList.add(t)))
+            .catch(() => this._message.text = "Could not get trades");
     }
 
     add(event) {
@@ -62,8 +63,15 @@ class TradeController {
     }
 
     clear() {
-        this._message.text = "All trades removed successfully";
-        this._tradeList.clear();
+        ConnectionFactory
+            .getConnection()
+            .then(conn => new TradeDao(conn))
+            .then(dao => dao.clear())
+            .then(() => {
+                this._message.text = "All trades removed successfully";
+                this._tradeList.clear();
+            })
+            .catch(e => this._message.text = "Could not remove all trades");
     }
 
     _createNewTrade() {
