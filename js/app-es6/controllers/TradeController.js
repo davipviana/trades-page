@@ -7,7 +7,7 @@ import {DateHelper} from '../helpers/DateHelper';
 import {Bind} from '../helpers/Bind';
 import {Trade} from '../models/Trade';
 
-class TradeController {
+export class TradeController {
 
     constructor() {
         let $ = document.querySelector.bind(document);

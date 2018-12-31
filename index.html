@@ -11,7 +11,7 @@
     
     <h1 class="text-center">Trades</h1>
     <div id="messageView"></div>
-    <form class="form" onsubmit="controller.add(event)">
+    <form class="form">
         
         <div class="form-group">
             <label for="date">Date</label>
@@ -32,29 +32,19 @@
     </form>
     
     <div class="text-center">
-        <button onclick="controller.clear()" class="btn btn-primary text-center" type="button">
+        <button class="btn btn-primary text-center" type="button">
             Clear
         </button>
     </div> 
     <br>
     <br>
     <div id="tradeListView"></div>
-    <script src="js/app/models/Trade.js"></script>
-    <script src="js/app/controllers/TradeController.js"></script>
-    <script src="js/app/helpers/DateHelper.js"></script>
-    <script src="js/app/models/TradeList.js"></script>
-    <script src="js/app/views/View.js"></script>
-    <script src="js/app/views/TradeListView.js"></script>
-    <script src="js/app/views/MessageView.js"></script>
-    <script src="js/app/models/Message.js"></script>
-    <script src="js/app/services/ProxyFactory.js"></script>
-    <script src="js/app/helpers/Bind.js"></script>
-    <script src="js/app/services/TradeService.js"></script>
-    <script src="js/app/services/HttpService.js"></script>
-    <script src="js/app/services/ConnectionFactory.js"></script>
-    <script src="js/app/dao/TradeDao.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
     <script>
-        let controller = new TradeController();
+        System.defaultJSExtensions = true; // omit js extensions
+        System.import('js/app/boot').catch(function(err) {
+            console.error(err);
+        });
     </script>
 </body>
 </html>
